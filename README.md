@@ -61,7 +61,7 @@ Configuration: `deploy/runsim.ini.example` (every key optional).
 On a CSR runner (v0.4.x, registered on testnet, `runtime.enabled = true`):
 
 ```sh
-csr service add-onchain --outpoint <SERVICE OUTPOINT>
+csr service add-onchain --outpoint 0xbc779b173b86d9f1f737a70673e9ff04e0a12ce5ccf9d921a9c83725d04e1bf1:0
 csr service approve <SERVICE CODE HASH>
 ```
 
@@ -70,7 +70,7 @@ or approve it on the dashboard's Services page. Approving adds the code hash to 
 | | |
 |---|---|
 | Service code hash | `0xbe86725b9c2df8538871ac68e500686766cb49ae38c539ba1e3d7ad0f0f9c1b3` |
-| Service code cell (testnet) | `<SERVICE OUTPOINT>` (published by the simulator's `deploy-service`) |
+| Service code cell (testnet) | `0xbc779b173b86d9f1f737a70673e9ff04e0a12ce5ccf9d921a9c83725d04e1bf1:0` |
 
 The code hash is the blake2b data hash of `service/simsvc.elf`; rebuild it with `make -C service` (clang with the RISC-V target, ckb-c-stdlib from the CSR repository) and compare. The service has no network, no file access and no key: it reads the job payload, keeps one counter in its sandbox storage and reads the cells named in the payload.
 

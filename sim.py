@@ -833,7 +833,7 @@ class Sim:
             m["jobs"] += 1
             m["fees"] += fee
             self.state.stat("created_" + kind)
-        log(self.dir, "job_created", id=jid, kind=kind, mode=mode, trigger=trigger, tvalue=tvalue, runs=runs,
+        log(self.dir, "job_checked" if self.dry else "job_created", id=jid, kind=kind, mode=mode, trigger=trigger, tvalue=tvalue, runs=runs,
             tip_ckb=tip / CKB, capacity_ckb=cap / CKB, outpoint=job["outpoint"], expiry=expiry,
             assigned=job.get("assigned"))
         return job, h
