@@ -766,14 +766,18 @@ class Sim:
                 expiry = int.from_bytes(f[6], "little")
                 if expiry > clock and len(la) in (32, 64):
                     out.append(b2h(la[-32:]))
-        except (RpcError, ValueError, KeyError) as e:
+        except (RpcError, ValueError, KeyError, TypeError, IndexError, OSError) as e:
             log(self.dir, "runner_scan_failed", error=str(e))
         return sorted(set(out))
 
     def clock_ms(self):
-        cc = self.dep["config_cell"]
-        c = self.rpc.call("get_live_cell", {"tx_hash": cc["tx_hash"], "index": hex(cc["index"])}, True)
-        return int.from_bytes(h2b(c["cell"]["data"]["content"])[33:41], "little")
+        """The monitor clock (config cell data: monitor_pubkey 33 ‖ clock_ms u64 LE). The config cell is
+        recreated on every clock update, so it is found by its type script, not by a stored out point."""
+        cfg = self.script("config_type", self.dep["config_cell"]["type_args"])
+        cells = self.rpc.cells(cfg, "type", limit=5, max_pages=1)
+        if not cells:
+            raise RpcError("monitor config cell not found")
+        return int.from_bytes(h2b(cells[0]["output_data"])[33:41], "little")
 
     def campaigns(self, tip):
         cache = self.state.d.get("campaign_cache")
@@ -1130,7 +1134,7 @@ class Sim:
         if create or self.dry or random.random() < p:
             try:
                 self.new_job(tip, create)
-            except (RpcError, RuntimeError) as e:
+            except Exception as e:  # never lose the tick's state over one job
                 log(self.dir, "create_failed", error=str(e))
         self.prune()
         if not self.dry:
