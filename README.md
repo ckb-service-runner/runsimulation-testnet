@@ -67,6 +67,14 @@ csr service approve <SERVICE CODE HASH>
 
 or approve it on the dashboard's Services page. Approving adds the code hash to `runtime.allowed_services`.
 
+Two things that keep a runner from picking the jobs:
+
+- **The service runtime is off.** `runtime.enabled` is `false` by default; switch it on in the dashboard Settings.
+- **CLI approval while `csr run` is running.** The daemon keeps its configuration in memory, so a `csr service approve`
+  from the shell takes effect only after `sudo systemctl restart csr`. Approving on the dashboard applies at once.
+
+`csr jobs plan --json` shows, for every job cell, whether the runner selects it or why it does not.
+
 | | |
 |---|---|
 | Service code hash | `0xbe86725b9c2df8538871ac68e500686766cb49ae38c539ba1e3d7ad0f0f9c1b3` |

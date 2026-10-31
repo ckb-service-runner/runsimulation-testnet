@@ -16,6 +16,10 @@ install -m 0644 deploy/runsim.timer /etc/systemd/system/runsim.timer
 systemctl daemon-reload
 sudo -u runsim python3 /opt/runsim/sim.py --config /etc/runsim/runsim.ini selftest
 sudo -u runsim python3 /opt/runsim/sim.py --config /etc/runsim/runsim.ini init
-echo "Installed. Fund the address above (or let the faucet do it), then:"
-echo "  sudo -u runsim python3 /opt/runsim/sim.py --config /etc/runsim/runsim.ini deploy-service"
-echo "  systemctl enable --now runsim.timer"
+if grep -q '"service"' /var/lib/runsim/state.json 2>/dev/null; then
+  echo "Updated. The timer picks up the new version at its next run."
+else
+  echo "Installed. Fund the address above (or let the faucet do it), then:"
+  echo "  sudo -u runsim python3 /opt/runsim/sim.py --config /etc/runsim/runsim.ini deploy-service"
+  echo "  systemctl enable --now runsim.timer"
+fi
