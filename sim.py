@@ -1117,7 +1117,8 @@ class Sim:
     def tick(self, create=None):
         tip = self.rpc.tip()
         self.refresh_pending()
-        self.faucet()
+        if not self.dry:
+            self.faucet()
         if not self.service_hash():
             log(self.dir, "no_service", note="run `sim.py deploy-service` first")
             self.state.save()
