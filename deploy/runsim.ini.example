@@ -37,5 +37,6 @@ weights = ok:30,timed:15,every:10,fail:15,crt:20,crowdcell:10
 # manual = log a "funding_needed" line instead; send testnet CKB to the address yourself
 # off    = never
 faucet = auto
+faucet_url = https://faucet-api.nervos.org/claim_events
 faucet_amount_ckb = 100000
 faucet_below_ckb = 50000

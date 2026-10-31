@@ -431,7 +431,7 @@ DEFAULTS = {
     "weights": "ok:30,timed:15,every:10,fail:15,crt:20,crowdcell:10",
     # faucet
     "faucet": "auto",
-    "faucet_url": "https://faucet.nervos.org/claim_events",
+    "faucet_url": "https://faucet-api.nervos.org/claim_events",
     "faucet_amount_ckb": "100000",
     "faucet_below_ckb": "50000",
     # crowdcell
