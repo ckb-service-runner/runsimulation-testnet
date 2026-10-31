@@ -111,7 +111,7 @@ test('simulator: every job kind against a registered runner', { timeout: 900000 
     const fail = Object.values(crt.jobs).filter((j) => j.kind === 'fail');
     assert.equal(fail[0].state, 'refunded');
     // the runner wallet grew by exactly the tips the simulator saw
-    const tips = Object.values(crt.runners_seen).reduce((a, x) => a + x.tips * 1e8, 0);
+    const tips = Object.values(crt.runners_seen).reduce((a, x) => a + x.tips, 0); // shannons in state.json
     const after1 = (await wallet(r)).capacity_shannons;
     assert.equal(after1 - before, Math.round(tips));
     assert.ok(s.month.committed > 0 && s.month.committed <= 100000);
