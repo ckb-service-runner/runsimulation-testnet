@@ -1,0 +1,4 @@
+name = "runsim"
+language = "c"
+elf = "simsvc.elf"
+args = "0x"

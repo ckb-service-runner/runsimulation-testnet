@@ -1,0 +1,41 @@
+# runsimulation-testnet configuration (/etc/runsim/runsim.ini). Every key is optional; the values below
+# are the defaults. Lines starting with # are comments.
+[sim]
+# Testnet RPC with the Indexer module. A public endpoint is fine; your own node is better.
+rpc_url = https://testnet.ckb.dev/rpc
+data_dir = /var/lib/runsim
+
+# --- money -------------------------------------------------------------------------------------
+# Hard monthly limit: every CKB put into a job cell, a CRT switch cell or the service code cell counts,
+# refunds do not give it back. Tips and fees are a small part of it.
+monthly_cap_ckb = 100000
+# on = spread the cap over the month (day 10 of 30 may use at most a third of it)
+pacing = on
+tip_min_ckb = 1
+tip_max_ckb = 3
+max_fee_shannons = 100000
+max_cycles = 1000000
+# never create a job that would leave less than this in the wallet
+reserve_ckb = 2000
+
+# --- schedule ----------------------------------------------------------------------------------
+# One tick per systemd timer run (tick_minutes must match the timer). A new job appears at random,
+# on average every mean_interval_minutes.
+tick_minutes = 10
+mean_interval_minutes = 150
+# blocks after the trigger before an unrun job is refunded
+expiry_blocks = 1500
+# timed jobs and CRT releases are due 1..delay_max_blocks blocks after creation
+delay_max_blocks = 300
+# share of jobs addressed to one registered runner (soft assignment, see README)
+assign_fraction = 0.25
+weights = ok:30,timed:15,every:10,fail:15,crt:20,crowdcell:10
+
+# --- funding -----------------------------------------------------------------------------------
+# auto   = once a month, when the balance is below faucet_below_ckb, claim faucet_amount_ckb
+#          from the testnet faucet (it allows 300,000 per address and month)
+# manual = log a "funding_needed" line instead; send testnet CKB to the address yourself
+# off    = never
+faucet = auto
+faucet_amount_ckb = 100000
+faucet_below_ckb = 50000
